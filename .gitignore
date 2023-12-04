@@ -3,6 +3,3 @@ frontend/node_modules/
 
 # Ignore python /venv
 backend/venv/
-# Ignore built frontend files
-backend/assets/
-backend/public/
