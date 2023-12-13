@@ -1,4 +1,4 @@
-from models import db, User, Participant, Administrator
+from app.models import db, User, Participant, Administrator
 from flask_bcrypt import generate_password_hash, check_password_hash
 
 def register_participant(username, password):

@@ -1,34 +1,12 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-from flask_admin import Admin
-from flask_migrate import Migrate
-from flask_bcrypt import Bcrypt, check_password_hash
+from flask import render_template, request, redirect, url_for, flash
+from flask_login import current_user, login_required, login_user, logout_user
+from flask_bcrypt import check_password_hash
 
 from functools import wraps
 
-from models import db, User
-from functions import verify_login
-
-# Initial app instantiation
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://naclolocal:naclopass@localhost/naclodb'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = '8c031b18ba3d06c8d033ea60'  # Replace with your secret key
-
-# Database and migration initialization
-db.init_app(app)
-migrate = Migrate(app, db)
-
-# Admin panel instantiation
-admin = Admin(app, name='MyApp', template_mode='bootstrap3')
-
-# Flask-login code; loaders, role decorators, login manager, bcrypt initialization
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = 'login'
-
-bcrypt = Bcrypt(app)
+from app import app, login_manager
+from app.functions import verify_login
+from app.models import User
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -101,6 +79,3 @@ def index():
 # @app.route('/')
 # def welcome():
 #     return render_template('index.html')
-
-if __name__ == '__main__':
-    app.run(port=9000)
